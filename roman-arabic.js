@@ -157,14 +157,30 @@
       i++;
     }
 
+    //Roman Numeral Input
+    // var num4 = ['C','C','C','L','X','V']; //365
+    // var num4 = ['M','C','C','C','X','X','X','I','X']; //1339
+    var num4 = ['D','C','X','L','I','I','I']; //643
+    
+    // to check the correctness of the Roman numeral input
+    
+    function checkTheRoman()
+    {
+      for (var i = 0; i < len; i++) {
+        if(num4[i]!=='M'||num4[i]!=='D'||num4[i]!=='C'||num4[i]!=='L'||num4[i]!=='X'||num4[i]!=='V'||num4[i]!=='I')
+        {
+          return false;
+        }
+        else 
+         return true;
+      };
 
-     
-     // converting roman numerals to arabic
+    } 
+    
+    // converting roman numerals to arabic
     function romanToArabic()
     {
-     // var num4 = ['C','C','C','L','X','V']; //365
-      // var num4 = ['M','C','C','C','X','X','X','I','X']; //1339
-      var num4 = ['D','C','X','L','I','I','I']; //643
+     
      i=0;
      len=num4.length;
      var a=[]; 
@@ -216,8 +232,15 @@
 
     }
 
-    romanToArabic();
     arabicToRoman();
+    if(checkTheRoman===true)
+    {
+      romanToArabic();
+    }
+    else
+    {
+      console.log("Not a valid Roman numeral!");
+    }
 
     
 
