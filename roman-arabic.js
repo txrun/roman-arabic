@@ -23,7 +23,7 @@
     //console.log(arabicToRomanMap[5]);
   
     //split the number into 100s and 10s and 1s
-    function splitNumbers()
+    function splitArabicNumbers()
     {
       num=num2;
       len=num.toString().length;
@@ -55,7 +55,7 @@
     function arabicToRoman()
     {
 
-    splitNumbers();
+    splitArabicNumbers();
     var roman = [];
     i=0;
     
@@ -158,35 +158,62 @@
     }
 
     //Roman Numeral Input
-    // var num4 = ['C','C','C','L','X','V']; //365
+    var num4 = ['C','C','C','L','X','V']; //365
     // var num4 = ['M','C','C','C','X','X','X','I','X']; //1339
-    var num4 = ['D','C','X','L','I','I','I']; //643
-    
+    // var num4 = ['D','C','X','L','I','I','I']; //643
+    var a=[]; 
+
     // to check the correctness of the Roman numeral input
     
     function checkTheRoman()
     {
       for (var i = 0; i < len; i++) {
+        //to check if the input has letters besides that in the Roman numerals
         if(num4[i]!=='M'||num4[i]!=='D'||num4[i]!=='C'||num4[i]!=='L'||num4[i]!=='X'||num4[i]!=='V'||num4[i]!=='I')
         {
           return false;
         }
         else 
-         return true;
+          return true;
+
+        // to check if the Roman numeral has more than 3 consecutive Is
+        if(num4[i]==='I' && num4[i+1]==='I' && num4[i+2]==='I' && num4[i+3]==='I')
+        {
+          return false;
+        }
+
+        // to check if the Roman numeral has consecutive Vs or Ls
+        if((num4[i]==='V' && num4[i+1]==='V')||(num4[i]==='L'&&num4[i+1]==='L'))
+        {
+          return false;
+        }
+
+        // to check if the Roman numeral has consecutive Xs
+        if(num4[i]==='X' && num4[i+1]==='X' && num4[i+2]==='X' && num4[i+3]==='X')
+        {
+          return false;
+        }
+
+        // to check legality of the order of the Roman numerals
+        if(a[i]<a[i+1])
+        {
+          if((a[i]*10)<a[i+1])
+          {
+            return false;
+          }
+        } 
+
+
       };
 
     } 
     
-    // converting roman numerals to arabic
-    function romanToArabic()
-    {
-     
-     i=0;
-     len=num4.length;
-     var a=[]; 
-     var sum=0,flag=0;
 
-     for (var i = 0; i < len; i++) {
+    // split the Roman numerals into individual arabic numbers
+    function splitRomanNumbers()
+    {
+      len = num4.length;
+      for (var i = 0; i < len; i++) {
        if (num4[i]==='M')
         a[i]=1000;
         else if (num4[i]==='D')
@@ -202,7 +229,17 @@
         else if (num4[i]==='I')
           a[i]=1;
      };
+    }
 
+    // converting roman numerals to arabic
+    function romanToArabic()
+    {     
+     i=0;
+     len=num4.length;
+     var sum=0,flag=0;
+
+     splitRomanNumbers();
+     
      for (var i = 0; i < len; i++) {
        // console.log(i);
        if(flag===1)
@@ -233,7 +270,7 @@
     }
 
     arabicToRoman();
-    if(checkTheRoman===true)
+    if(checkTheRoman())
     {
       romanToArabic();
     }
