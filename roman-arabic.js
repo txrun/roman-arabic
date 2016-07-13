@@ -21,40 +21,45 @@
     };
 
     //console.log(arabicToRomanMap[5]);
-    
+  
     //split the number into 100s and 10s and 1s
-    num=num2;
-
-    len=num.toString().length;
-
-    var i=len-1;
-    while(num>=1)
+    function splitNumbers()
     {
-      digit = num%10;
-      str[i] = digit;
-      i--;
-      num=parseInt(num/10);
-    }
-    
-    var k=2;
-    i=0; 
-    var str2 = [];
-    console.log(num2 + "=");
-    for (var j = 0; j < len; j++) {
-      str2[i]=str[j]*(Math.pow(10,k));
-      k--;
-      i++;
-    };
-
-
+      num=num2;
+      len=num.toString().length;
+      var i=len-1;
+      while(num>=1)
+      {
+        digit = num%10;
+        str[i] = digit;
+        i--;
+        num=parseInt(num/10);
+      }
+      
+      var k=2;
+      i=0; 
+      var str2 = [];
+      console.log(num2 + "=");
+      for (var j = 0; j < len; j++) {
+        str2[i]=str[j]*(Math.pow(10,k));
+        k--;
+        i++;
+      };
     console.log(str);
     console.log(str2);
-    
+
+    }
+
     //write the split numbers in terms of Roman numerals' values
+    
+    function arabicToRoman()
+    {
+
+    splitNumbers();
     var roman = [];
     i=0;
     
-      if(len===4)
+      if(len===4) //  M = 1000
       { 
         var t=str[i];
         if(str[i]===1||str[i]===2)
@@ -70,9 +75,6 @@
         var t=str[i];
         if(str[i]===1||str[i]===2||str[i]===3)
         { 
-          // for (var k = 0; k < t; k++) {
-          //   console.log('C');
-          // };
           console.log('C'.repeat(t));
         }
         else if(str[i]===4)
@@ -132,11 +134,7 @@
         var t=str[i];
         if(str[i]===1||str[i]===2||str[i]===3)
         { 
-          // var t=str[i];
           console.log('I'.repeat(t));
-          // for (var k = 0; k < t; k++) {
-          //   console.log('I');
-          // };
         }
         else if(str[i]===4)
         {
@@ -157,10 +155,13 @@
       }
       len--;
       i++;
+    }
+
 
      
      // converting roman numerals to arabic
-
+    function romanToArabic()
+    {
      // var num4 = ['C','C','C','L','X','V']; //365
       // var num4 = ['M','C','C','C','X','X','X','I','X']; //1339
       var num4 = ['D','C','X','L','I','I','I']; //643
@@ -212,6 +213,11 @@
      };
     
      console.log("Equavalent arabic : "+sum);
+
+    }
+
+    romanToArabic();
+    arabicToRoman();
 
     
 
