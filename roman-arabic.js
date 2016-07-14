@@ -3,7 +3,7 @@
 
 "use strict";
 var toConvert = [];
-var num2=23e9;
+var num2=2389;
 
 var str=[];
 var len;
@@ -19,39 +19,37 @@ var arabicToRomanMap = {
     1000:"M"
 };
 
-//console.log(arabicToRomanMap[5]);
-
     
 //split the number into 1000s, 100s, 10s and 1s
-function splitArabicNumbers()
+function decomposedNumbers(input)
 {
-    var num=num2;
-    len=num.toString().length;
-    var i=len-1;
-    while(num>=1)
+    var decomposedDigits = [];
+    var decomposedPowerOfTenDigits = [];
+    var inputLength = input.toString().length;
+    var i, j, k;
+
+    i = inputLength - 1;
+    while(input >= 1)
     {
-        digit = num%10;
-        str[i] = digit;
-        if(checkTheArabic(digit)===false)
+        decomposedDigits[i] = input % 10;
+        if(checkTheArabic(decomposedDigits[i]) === false)
         {
             console.log("Invalid Input");
             break;
         }
         i--;
-        num=parseInt(num/10);
+        input = parseInt(input / 10);
     }
       
-    var k=3;
-    i=0; 
-    var str2 = [];
-    console.log(num2 + "=");
-    for (var j = 0; j < len; j++) {
-        str2[i]=str[j]*(Math.pow(10,k));
+    k = inputLength - 1;
+    i = 0; 
+    for (var j = 0; j < inputLength;  j++) {
+        decomposedPowerOfTenDigits[i] = decomposedDigits[j] * Math.pow(10, k);
         k--;
         i++;
     };
-    console.log(str);
-    console.log(str2);
+
+    return decomposedPowerOfTenDigits;
 }
 
 //to check the validity of the Arabic number input
@@ -64,12 +62,10 @@ function checkTheArabic(n1)
     // }
     if(isNaN(n1))
     {
-        console.log(n1+"Not a number");
         return false;
     }
     else
     {
-        console.log(n1+"is a number");
         return true;
     }
 
@@ -77,12 +73,16 @@ function checkTheArabic(n1)
 
 }
 
+function debugCallers(fnName, input, output) {
+  console.log(`Calling function: ${fnName} with: ${input} and got output: ${output}`);
+}
 
 //write the split numbers in terms of Roman numerals' values
     
 function arabicToRoman()
 {
-    splitArabicNumbers();
+    var decomposedList = decomposedNumbers(2389);
+    debugCallers("decomposedNumbers", 2389, decomposedList);
       
     var i=0;
       
@@ -195,39 +195,33 @@ var roman = ['M','D','C','L','X','V','I'];
 function checkTheRoman()
 {
     len = num4.length;
-    console.log(len);
     for (var i = 0; i < len; i++) {
         //to check if the input has letters besides that in the Roman numerals
         if(roman.indexOf(num4[i])===-1)
         // if(num4[i]!=='M'||num4[i]!=='D'||num4[i]!=='C'||num4[i]!=='L'||num4[i]!=='X'||num4[i]!=='V'||num4[i]!=='I')
         {
-            console.log("Num is not valid");
             return false;
         }
         else 
         {
-            console.log("Num is valid");
             return true;
         }
 
         // to check if the Roman numeral has more than 3 consecutive Is
         if(num4[i]==='I' && num4[i+1]==='I' && num4[i+2]==='I' && num4[i+3]==='I')
         {
-            console.log("Num is not valid 3Is");
            return false;
         }
 
         // to check if the Roman numeral has consecutive Vs or Ls
         if((num4[i]==='V' && num4[i+1]==='V')||(num4[i]==='L'&&num4[i+1]==='L'))
         {
-           console.log("Num is not valid 2Vs 2Ls");
             return false;
         }
 
         // to check if the Roman numeral has consecutive Xs
         if(num4[i]==='X' && num4[i+1]==='X' && num4[i+2]==='X' && num4[i+3]==='X')
         {
-            console.log("Num is not valid 3Xs");
             return false;
         }
 
@@ -236,7 +230,6 @@ function checkTheRoman()
         {
             if((a[i]*10)<a[i+1])
             {
-                console.log("Num is not in legal order");
                 return false;
             }
         } 
@@ -281,7 +274,6 @@ function romanToArabic()
      
     for (var i = 0; i < len; i++) 
     {
-        // console.log(i);
         if(flag===1)
         {
             flag=0;
@@ -291,13 +283,11 @@ function romanToArabic()
         if (a[i]<a[i+1])
         {
             sum = sum + (a[i+1]-a[i]);
-            // console.log(i);
             flag=1;
         }
         else if(a[i]>=a[i+1])
         {
             sum = sum + a[i];
-            // console.log(i);
         }
         else
         {
@@ -305,8 +295,7 @@ function romanToArabic()
         }
     };
       
-    console.log(num4);
-    console.log("Equavalent arabic : "+sum);
+    // console.log("Equavalent arabic : "+sum);
 
 }
 
@@ -315,7 +304,6 @@ function romanToArabic()
 // else
     // console.log("Wrong Arabic Input");
 
-console.log(num4.toString());
     
     
 if(checkTheRoman()===true)
