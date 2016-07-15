@@ -1,4 +1,3 @@
-
 // to convert roman to arabic numerals and vice versa
 
 "use strict";
@@ -32,11 +31,6 @@ function decomposedNumbers(input)
     while(input >= 1)
     {
         decomposedDigits[i] = input % 10;
-        if(checkTheArabic(decomposedDigits[i]) === false)
-        {
-            console.log("Invalid Input");
-            break;
-        }
         i--;
         input = parseInt(input / 10);
     }
@@ -53,24 +47,18 @@ function decomposedNumbers(input)
 }
 
 //to check the validity of the Arabic number input
-function checkTheArabic(n1)
+function isNumberInRange(input)
 {   
     //to check if numbers are in range
-    // if(num2>=0 && num2<=2999)
-    // { 
-    //     return true;
-    // }
-    if(isNaN(n1))
-    {
-        return false;
-    }
-    else
-    {
+    if(input >= 1 && input <= 2999)
+    { 
         return true;
     }
+}
 
-    //to check if input numeber has illegal characters(e.g. Letters of the alphabet)
-
+function isNumber(input)
+{
+    return !isNaN(input);
 }
 
 function debugCallers(fnName, input, output) {
@@ -79,10 +67,10 @@ function debugCallers(fnName, input, output) {
 
 //write the split numbers in terms of Roman numerals' values
     
-function arabicToRoman()
+function arabicToRoman(userInput)
 {
-    var decomposedList = decomposedNumbers(2389);
-    debugCallers("decomposedNumbers", 2389, decomposedList);
+    var decomposedList = decomposedNumbers(userInput);
+    debugCallers("decomposedNumbers", userInput, decomposedList);
       
     var i=0;
       
@@ -299,10 +287,12 @@ function romanToArabic()
 
 }
 
-// if(checkTheArabic()===true)
-    arabicToRoman();
-// else
-    // console.log("Wrong Arabic Input");
+
+var someInputNumber = 1489;
+if(isNumber(someInputNumber) && isNumberInRange(someInputNumber))
+    arabicToRoman(someInputNumber);
+else
+    console.log("Wrong Arabic Input");
 
     
     
