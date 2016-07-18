@@ -99,11 +99,11 @@ function arabicToRoman(userInput)
         }
         else if(decomposedList[i]===500)
         {
-            var t=decomposedList[i];
-            for (var k = 0; k < t; k++) {
-                romanResult = romanResult + 'C'.repeat(t);
-                // console.log('C');
-            };
+            // var t=decomposedList[i];
+            // for (var k = 0; k < t; k++) {
+            //     romanResult = romanResult + 'C'.repeat(t);
+            // };
+            romanResult = romanResult + 'D';
         }
         else if(decomposedList[i]===600||decomposedList[i]===700||decomposedList[i]===800)
         {
@@ -117,7 +117,7 @@ function arabicToRoman(userInput)
         }
     }
     len--;
-    i++;
+    i++;  
 
     if(len===2) // X = 10
     {
@@ -125,7 +125,7 @@ function arabicToRoman(userInput)
         if(decomposedList[i]===10||decomposedList[i]===20||decomposedList[i]===30)
         { 
             for (var k = 0; k < t; k++) {
-                romanResult = romanResult + 'M';
+                romanResult = romanResult + 'X';
                 // console.log('X');
             };
         }
@@ -312,27 +312,31 @@ function romanRuleForX(character1InSequence, character2InSequence, character3InS
 }
 
 // split the Roman numerals into individual arabic numbers
-function splitRomanNumbers()
+function splitRomanNumbers(input)
 {
-    len = num4.length;
+    var equavalentRomanCharacterArray = [];
+    var len = input.length;
     for (var i = 0; i < len; i++) 
     {
-        if (num4[i]==='M')
-            a[i]=1000;
-        else if (num4[i]==='D')
-            a[i]=500;
-        else if (num4[i]==='C')
-            a[i]=100;
-        else if (num4[i]==='L')
-            a[i]=50;
-        else if (num4[i]==='X')
-            a[i]=10;
-        else if (num4[i]==='V')
-            a[i]=5
-        else if (num4[i]==='I')
-            a[i]=1;
+        if (input[i] === 'M')
+            equavalentRomanCharacterArray[i]=1000;
+        else if (input[i] === 'D')
+            equavalentRomanCharacterArray[i]=500;
+        else if (input[i] === 'C')
+            equavalentRomanCharacterArray[i]=100;
+        else if (input[i] === 'L')
+            equavalentRomanCharacterArray[i]=50;
+        else if (input[i] === 'X')
+            equavalentRomanCharacterArray[i]=10;
+        else if (input[i] === 'V')
+            equavalentRomanCharacterArray[i]=5
+        else if (input[i] === 'I')
+            equavalentRomanCharacterArray[i]=1;
     };
+
+    return equavalentRomanCharacterArray;
 }
+
 
 // converting roman numerals to arabic
 function romanToArabic()
@@ -341,7 +345,7 @@ function romanToArabic()
     len=num4.length;
     var sum=0,flag=0;
 
-    splitRomanNumbers();
+    //splitRomanNumbers();
      
     for (var i = 0; i < len; i++) 
     {
@@ -388,6 +392,8 @@ var invalidRomanInput = "MCFHXXXIX";
 var validRomanOutput = isRoman(validRomanInput);
 var invalidRomanOutput = isRoman(invalidRomanInput); 
 
+var splitRomanArray = splitRomanNumbers(validRomanInput);
+debugCallers("splitRomanNumbers", validRomanInput, splitRomanArray);
  
 
 debugCallers("isRoman", validRomanInput, validRomanOutput);
@@ -402,3 +408,4 @@ debugCallers("isRoman", invalidRomanInput, invalidRomanOutput);
 //     console.log("Not a valid Roman numeral!");
 // }
 
+  
