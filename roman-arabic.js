@@ -199,27 +199,37 @@ var roman = ['M','D','C','L','X','V','I'];
 function isRoman(input)
 {   
     var length = input.length;
+    var j = 0;
     for (var i = 0; i < length; i++) {
-
+        j = i;
+        
         if(!isCharacterPresentInRomanArray(input[i]))
         {
           return false;
         }        
         
         // to check if the Roman numeral has more than 3 consecutive Is
-        if(num4[i]==='I' && num4[i+1]==='I' && num4[i+2]==='I' && num4[i+3]==='I')
-        {
-           return false;
+        if(!romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]))
+        { 
+          // var validateForRuleOfI = romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]);
+          // debugCallers("romanRuleForI",input[i],validateForRuleOfI);
+          return false;
         }
 
-        // to check if the Roman numeral has consecutive Vs or Ls
-        if((num4[i]==='V' && num4[i+1]==='V')||(num4[i]==='L'&&num4[i+1]==='L'))
+        // to check if the Roman numeral has consecutive Vs
+        if(!romanRuleForV(input[i], input [i+1]))
+        {
+            return false;
+        }
+
+        // to check if the Roman numeral has consequtive Ls
+        if(!romanRuleForL(input[i], input[i+1]))
         {
             return false;
         }
 
         // to check if the Roman numeral has consecutive Xs
-        if(num4[i]==='X' && num4[i+1]==='X' && num4[i+2]==='X' && num4[i+3]==='X')
+        if(!romanRuleForX(input[i], input[i+1], input[i+2], input[i+3]))
         {
             return false;
         }
@@ -233,6 +243,10 @@ function isRoman(input)
             }
         } 
     };
+    if(j === length-1)
+    {
+      return true;
+    }
 
 } 
 
@@ -247,7 +261,55 @@ function isCharacterPresentInRomanArray(character)
   {
     return true;
   }
-}    
+} 
+
+function romanRuleForI(character1InSequence, character2InSequence, character3InSequence, character4InSequence)
+{
+  if(character1InSequence === 'I' && character2InSequence === 'I' && character3InSequence === 'I' && character4InSequence === 'I')
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}   
+
+function romanRuleForV(character1InSequence, character2InSequence)
+{
+  if(character1InSequence === 'V' && character2InSequence === 'V')
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
+
+function romanRuleForL(character1InSequence, character2InSequence)
+{
+  if(character1InSequence === 'L' && character2InSequence === 'L')
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
+
+function romanRuleForX(character1InSequence, character2InSequence, character3InSequence, character4InSequence)
+{
+  if(character1InSequence === 'X' && character2InSequence === 'X' && character3InSequence === 'X' && character4InSequence === 'X')
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
 
 // split the Roman numerals into individual arabic numbers
 function splitRomanNumbers()
@@ -324,7 +386,9 @@ var validRomanInput = "MCDLXXXIX";
 var invalidRomanInput = "MCFHXXXIX";
 
 var validRomanOutput = isRoman(validRomanInput);
-var invalidRomanOutput = isRoman(invalidRomanInput);    
+var invalidRomanOutput = isRoman(invalidRomanInput); 
+
+ 
 
 debugCallers("isRoman", validRomanInput, validRomanOutput);
 debugCallers("isRoman", invalidRomanInput, invalidRomanOutput);
