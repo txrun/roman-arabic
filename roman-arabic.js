@@ -339,37 +339,37 @@ function splitRomanNumbers(input)
 
 
 // converting roman numerals to arabic
-function romanToArabic()
+function romanToArabic(input)
 {     
-    i=0;
-    len=num4.length;
-    var sum=0,flag=0;
+    var len = input.length;
+    var sum = 0, flag = 0;
 
-    //splitRomanNumbers();
+    var splitRomanArray = splitRomanNumbers(input);
      
     for (var i = 0; i < len; i++) 
     {
-        if(flag===1)
+        if(flag === 1)
         {
-            flag=0;
+            flag = 0;
             continue;
         }
 
-        if (a[i]<a[i+1])
+        if (splitRomanArray[i] < splitRomanArray[i+1])
         {
-            sum = sum + (a[i+1]-a[i]);
-            flag=1;
+            sum = sum + (splitRomanArray[i+1]-splitRomanArray[i]);
+            flag = 1;
         }
-        else if(a[i]>=a[i+1])
+        else if(splitRomanArray[i] >= splitRomanArray[i+1])
         {
-            sum = sum + a[i];
+            sum = sum + splitRomanArray[i];
         }
         else
         {
-            sum=sum+a[i];
+            sum = sum + splitRomanArray[i];
         }
     };
       
+    return sum;
     // console.log("Equavalent arabic : "+sum);
 
 }
@@ -392,20 +392,21 @@ var invalidRomanInput = "MCFHXXXIX";
 var validRomanOutput = isRoman(validRomanInput);
 var invalidRomanOutput = isRoman(invalidRomanInput); 
 
-var splitRomanArray = splitRomanNumbers(validRomanInput);
-debugCallers("splitRomanNumbers", validRomanInput, splitRomanArray);
+// var splitRomanArray = splitRomanNumbers(validRomanInput);
+// debugCallers("splitRomanNumbers", validRomanInput, splitRomanArray);
  
 
 debugCallers("isRoman", validRomanInput, validRomanOutput);
 debugCallers("isRoman", invalidRomanInput, invalidRomanOutput);
 
-// if(validRoman)
-// {
-//     romanToArabic();
-// }
-// else
-// {
-//     console.log("Not a valid Roman numeral!");
-// }
+if(isRoman)
+{
+    var theRomanResult = romanToArabic(validRomanInput);
+    debugCallers("romanToArabic", validRomanInput, theRomanResult);
+}
+else
+{
+    console.log("Not a valid Roman numeral!");
+}
 
   
