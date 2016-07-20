@@ -118,3 +118,17 @@ only - M, D, C, L, X, V ,and I.
 * And, finally the order of the Roman characters - If the value of a 
 roman character is less than the character following it, then ten times 
 the first character should be more than the second character.
+
+A function splitRomanNumbers() stores the Arabic value of the 
+individual Roman characters in an array.
+
+The actual translation to Arabic numbers is done by the function 
+romanToArabic(). Here, it iterates over the length of the array of split 
+roman characters. Two checks are done - 
+* If the value in the array is followed by a lesser value number, the 
+current value is simply added to a 'sum' variable
+* If the value in the array is followed by a greater value number, the 
+difference is calculated and added to 'sum',and an iteration is skipped
+
+After the entire iteration is finished, we have the equavalent arabic 
+value in 'sum'.
