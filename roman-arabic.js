@@ -1,12 +1,9 @@
 // to convert roman to arabic numerals and vice versa
 
 "use strict";
-var toConvert = [];
-var num2=2389;
 
-var str=[];
-var len;
-var digit;
+const readline = require('readline');
+const fs = require('fs');
 
 var arabicToRomanMap = {
     1:"I",
@@ -63,15 +60,12 @@ function debugCallers(fnName, input, output) {
 }
 
 //write the split numbers in terms of Roman numerals' values
-    
 function arabicToRoman(userInput)
 {
     var decomposedList = decomposedNumbers(userInput);
-    debugCallers("decomposedNumbers", userInput, decomposedList);
       
     var i=0;
     var len = userInput.toString().length;
-    
     var romanResult = "";
 
     if(len===4) //  M = 1000
@@ -82,9 +76,9 @@ function arabicToRoman(userInput)
         {  
             romanResult = romanResult + 'M'.repeat(t);
         }
+        len--;
+        i++;
     }
-    len--;
-    i++;
 
     if(len===3) // C = 100
     {
@@ -99,26 +93,20 @@ function arabicToRoman(userInput)
         }
         else if(decomposedList[i]===500)
         {
-            // var t=decomposedList[i];
-            // for (var k = 0; k < t; k++) {
-            //     romanResult = romanResult + 'C'.repeat(t);
-            // };
             romanResult = romanResult + 'D';
         }
         else if(decomposedList[i]===600||decomposedList[i]===700||decomposedList[i]===800)
         {
             romanResult = romanResult + ('D'+'C'.repeat(t-5));
-            // console.log('D'+'C'.repeat(t-5));
         }
         else if(decomposedList[i]===900)
         {
             romanResult = romanResult + ("CM");
-            // console.log("CM");
         }
+        len--;
+        i++; 
     }
-    len--;
-    i++;  
-
+    
     if(len===2) // X = 10
     {
         var t=decomposedList[i]/10;
@@ -126,32 +114,27 @@ function arabicToRoman(userInput)
         { 
             for (var k = 0; k < t; k++) {
                 romanResult = romanResult + 'X';
-                // console.log('X');
             };
         }
         else if(decomposedList[i]===40)
         {
             romanResult = romanResult + "XL";
-            // console.log("XL");
         }
         else if(decomposedList[i]===50)
         {
             romanResult = romanResult + 'L';
-            // console.log('L');
         }
         else if(decomposedList[i]===60||decomposedList[i]===70||decomposedList[i]===80)
         {
             romanResult = romanResult + ('L'+('X'.repeat(t-5)));
-            // console.log('L'+('X'.repeat(t-5)));
         }
         else if(decomposedList[i]===90)
         {
             romanResult = romanResult + "XC";
-            // console.log("XC");
         }
+        len--;
+        i++;
     }
-    len--;
-    i++;
 
     if(len===1) // I = 1
     {
@@ -159,43 +142,32 @@ function arabicToRoman(userInput)
         if(decomposedList[i]===1||decomposedList[i]===2||decomposedList[i]===3)
         { 
             romanResult = romanResult + 'I'.repeat(t);
-            // console.log('I'.repeat(t));
         }
         else if(decomposedList[i]===4)
         {
             romanResult = romanResult + "IV";
-            // console.log("IV");
         }
         else if (decomposedList[i]===5)
         {
             romanResult = romanResult + "V";
-            // console.log("V");
         }
         else if (decomposedList[i]===6||decomposedList[i]===7||decomposedList[i]===8)
         {
             romanResult = romanResult + ("V"+'I'.repeat(t-5));
-            // console.log("V"+'I'.repeat(t-5));
         }
         else if (decomposedList[i]===9)
         {
             romanResult = romanResult + "IX";
-            // console.log("IX");
         }
+        len--;
+        i++;
     }
-    len--;
-    i++;
-
-    return romanResult;
+    return romanResult;    
 }
 
-//Roman Numeral Input
-var num4 = ['C','C','C','L','X','V']; //365
-// var num4 = ['M','C','C','C','X','X','X','I','X']; //1339
-// var num4 = ['D','C','X','L','I','I','I']; //643
-var a=[]; 
 var roman = ['M','D','C','L','X','V','I'];
+
 // to check the correctness of the Roman numeral input
-    
 function isRoman(input)
 {   
     var length = input.length;
@@ -211,8 +183,6 @@ function isRoman(input)
         // to check if the Roman numeral has more than 3 consecutive Is
         if(!romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]))
         { 
-          // var validateForRuleOfI = romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]);
-          // debugCallers("romanRuleForI",input[i],validateForRuleOfI);
           return false;
         }
 
@@ -370,43 +340,32 @@ function romanToArabic(input)
     };
       
     return sum;
-    // console.log("Equavalent arabic : "+sum);
 
 }
 
+const fileInput = readline.createInterface({
+  input: fs.createReadStream('inputFile.txt')
+});
 
-var someInputNumber = 1489;
-var romanNumber = "";
 
-if(isNumber(someInputNumber) && isNumberInRange(someInputNumber))
-{  
-  romanNumber = arabicToRoman(someInputNumber);
-  debugCallers("arabicToRoman", someInputNumber, romanNumber);
-} 
-else
-    console.log("Error: Expected a number as input.");
+fileInput.on('line', (line) => {
+  // console.log(line);
 
-var validRomanInput = "MCDLXXXIX";
-var invalidRomanInput = "MCFHXXXIX";
+      if(isNumber(line) && isNumberInRange(line))
+      {  
+        var romanNumber = arabicToRoman(line);
+        console.log(romanNumber);
+      } 
 
-var validRomanOutput = isRoman(validRomanInput);
-var invalidRomanOutput = isRoman(invalidRomanInput); 
+      else if(isRoman)
+      {
+          var theRomanResult = romanToArabic(line);
+          console.log(theRomanResult);
+      }
+      else
+      {
+          console.log("Not a valid input!");
+      }
 
-// var splitRomanArray = splitRomanNumbers(validRomanInput);
-// debugCallers("splitRomanNumbers", validRomanInput, splitRomanArray);
- 
-
-debugCallers("isRoman", validRomanInput, validRomanOutput);
-debugCallers("isRoman", invalidRomanInput, invalidRomanOutput);
-
-if(isRoman)
-{
-    var theRomanResult = romanToArabic(validRomanInput);
-    debugCallers("romanToArabic", validRomanInput, theRomanResult);
-}
-else
-{
-    console.log("Not a valid Roman numeral!");
-}
-
+});
   
