@@ -19,28 +19,29 @@ var arabicToRomanMap = {
 //split the number into 1000s, 100s, 10s and 1s
 function decomposedNumbers(input)
 {
-    var decomposedDigits = [];
     var decomposedPowerOfTenDigits = [];
     var inputLength = input.toString().length;
-    var i, j, k;
-
-    i = inputLength - 1;
-    while(input >= 1)
-    {
-        decomposedDigits[i] = input % 10;
-        i--;
-        input = parseInt(input / 10);
-    }
-      
+    var k = 0;
+    
+    
     k = inputLength - 1;
-    i = 0; 
-    for (var j = 0; j < inputLength;  j++) {
-        decomposedPowerOfTenDigits[i] = decomposedDigits[j] * Math.pow(10, k);
-        k--;
-        i++;
-    };
+    var j=0;
+    var decomposedDigits = input.split("");
+    decomposedDigits.forEach(function (value, i){
+      decomposedPowerOfTenDigits[j] = value * Math.pow(10,k);
+      j++;
+      k--;
+    });
+   
+    // k = 0;
+    // for (var i = inputLength - 1; i >= 0; i--) {
+    //     decomposedPowerOfTenDigits[i] = (input % 10) * Math.pow(10,k);
+    //     input = parseInt(input / 10);
+    //     k++;
+    // }
 
     return decomposedPowerOfTenDigits;
+
 }
 
 //to check if numbers are in range
@@ -63,7 +64,6 @@ function debugCallers(fnName, input, output) {
 function arabicToRoman(userInput)
 {
     var decomposedList = decomposedNumbers(userInput);
-      
     var i=0;
     var len = userInput.toString().length;
     var romanResult = "";
@@ -71,7 +71,7 @@ function arabicToRoman(userInput)
     if(len===4) //  M = 1000
     { 
         var t=decomposedList[i]/1000;
-        console.log(decomposedList[i]);
+        // console.log(decomposedList[i]);
         if(decomposedList[i]===1000||decomposedList[i]===2000)
         {  
             romanResult = romanResult + 'M'.repeat(t);
@@ -166,59 +166,65 @@ function arabicToRoman(userInput)
 }
 
 var roman = ['M','D','C','L','X','V','I'];
+var romanToArabicMap = {
+  I : 1,
+  V : 5,
+  X : 10,
+  L : 50,
+  C : 100,
+  D : 500,
+  M : 1000
+};
 
 // to check the correctness of the Roman numeral input
 function isRoman(input)
 {   
     var length = input.length;
     var j = 0;
+    var a = [];
     for (var i = 0; i < length; i++) {
         j = i;
         
-        if(!isCharacterPresentInRomanArray(input[i]))
+        if (!isCharacterPresentInRomanArray(input[i]) &&
+            !romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]) &&
+            !romanRuleForV(input[i], input [i+1]) &&
+            !romanRuleForL(input[i], input[i+1]) &&
+            !romanRuleForX(input[i], input[i+1], input[i+2], input[i+3]))
         {
           return false;
-        }        
-        
-        // to check if the Roman numeral has more than 3 consecutive Is
-        if(!romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]))
-        { 
-          return false;
+        }
+        else
+        {
+          return true;
         }
 
-        // to check if the Roman numeral has consecutive Vs
-        if(!romanRuleForV(input[i], input [i+1]))
-        {
-            return false;
-        }
-
-        // to check if the Roman numeral has consequtive Ls
-        if(!romanRuleForL(input[i], input[i+1]))
-        {
-            return false;
-        }
-
-        // to check if the Roman numeral has consecutive Xs
-        if(!romanRuleForX(input[i], input[i+1], input[i+2], input[i+3]))
-        {
-            return false;
-        }
-
-        // to check legality of the order of the Roman numerals
-        if(a[i]<a[i+1])
-        {
-            if((a[i]*10)<a[i+1])
-            {
-                return false;
-            }
-        } 
     };
-    if(j === length-1)
-    {
-      return true;
-    }
+   return true;
 
 } 
+
+
+
+function romanRuleForCharacterOrder(character1InSequence, character2InSequence)
+{
+  if(romanToArabicMap[character1InSequence] < romanToArabicMap[character2InSequence])
+  {
+      if((romanToArabicMap[character1InSequence] * 10) < romanToArabicMap[character2InSequence])
+      {
+        return false;
+      }
+
+      else
+      {
+        return true;
+      }
+      
+  }
+  else
+      {
+        return true;
+      }
+}
 
 function isCharacterPresentInRomanArray(character)
 {
@@ -357,7 +363,7 @@ fileInput.on('line', (line) => {
         console.log(romanNumber);
       } 
 
-      else if(isRoman)
+      else if(isRoman(line))
       {
           var theRomanResult = romanToArabic(line);
           console.log(theRomanResult);
