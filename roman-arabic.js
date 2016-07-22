@@ -12,7 +12,13 @@ var arabicToRomanMap = {
     50:"L",
     100:"C",
     500:"D",
-    1000:"M"
+    1000:"M",
+    4: "IV",
+    9: "IX",
+    400: "CD",
+    900: "CM",
+    40: "XL",
+    90: "XC"
 };
 
     
@@ -32,13 +38,6 @@ function decomposedNumbers(input)
       j++;
       k--;
     });
-   
-    // k = 0;
-    // for (var i = inputLength - 1; i >= 0; i--) {
-    //     decomposedPowerOfTenDigits[i] = (input % 10) * Math.pow(10,k);
-    //     input = parseInt(input / 10);
-    //     k++;
-    // }
 
     return decomposedPowerOfTenDigits;
 
@@ -66,103 +65,63 @@ function arabicToRoman(userInput)
     var decomposedList = decomposedNumbers(userInput);
     var i=0;
     var len = userInput.toString().length;
-    var romanResult = "";
+    var n;
+    var t = 0;
 
-    if(len===4) //  M = 1000
-    { 
-        var t=decomposedList[i]/1000;
-        // console.log(decomposedList[i]);
-        if(decomposedList[i]===1000||decomposedList[i]===2000)
-        {  
-            romanResult = romanResult + 'M'.repeat(t);
-        }
-        len--;
-        i++;
-    }
+    var decomposedReversedList = decomposedList.reverse();
 
-    if(len===3) // C = 100
-    {
-        var t=decomposedList[i]/100;
-        if(decomposedList[i]===100||decomposedList[i]===200||decomposedList[i]===300)
-        { 
-            romanResult = romanResult + 'C'.repeat(t);
-        }
-        else if(decomposedList[i]===400)
-        {
-            romanResult = romanResult + "CD";
-        }
-        else if(decomposedList[i]===500)
-        {
-            romanResult = romanResult + 'D';
-        }
-        else if(decomposedList[i]===600||decomposedList[i]===700||decomposedList[i]===800)
-        {
-            romanResult = romanResult + ('D'+'C'.repeat(t-5));
-        }
-        else if(decomposedList[i]===900)
-        {
-            romanResult = romanResult + ("CM");
-        }
-        len--;
-        i++; 
-    }
-    
-    if(len===2) // X = 10
-    {
-        var t=decomposedList[i]/10;
-        if(decomposedList[i]===10||decomposedList[i]===20||decomposedList[i]===30)
-        { 
-            for (var k = 0; k < t; k++) {
-                romanResult = romanResult + 'X';
-            };
-        }
-        else if(decomposedList[i]===40)
-        {
-            romanResult = romanResult + "XL";
-        }
-        else if(decomposedList[i]===50)
-        {
-            romanResult = romanResult + 'L';
-        }
-        else if(decomposedList[i]===60||decomposedList[i]===70||decomposedList[i]===80)
-        {
-            romanResult = romanResult + ('L'+('X'.repeat(t-5)));
-        }
-        else if(decomposedList[i]===90)
-        {
-            romanResult = romanResult + "XC";
-        }
-        len--;
-        i++;
-    }
+    var mappedReverseRomanList = [];
 
-    if(len===1) // I = 1
-    {
-        var t=decomposedList[i];
-        if(decomposedList[i]===1||decomposedList[i]===2||decomposedList[i]===3)
-        { 
-            romanResult = romanResult + 'I'.repeat(t);
-        }
-        else if(decomposedList[i]===4)
-        {
-            romanResult = romanResult + "IV";
-        }
-        else if (decomposedList[i]===5)
-        {
-            romanResult = romanResult + "V";
-        }
-        else if (decomposedList[i]===6||decomposedList[i]===7||decomposedList[i]===8)
-        {
-            romanResult = romanResult + ("V"+'I'.repeat(t-5));
-        }
-        else if (decomposedList[i]===9)
-        {
-            romanResult = romanResult + "IX";
-        }
-        len--;
-        i++;
+    for (var i = 0; i < len; i++) {
+      
+      t = decomposedReversedList[i] / (Math.pow(10,i));
+
+      if(decomposedReversedList[i]===1||decomposedReversedList[i]===2||decomposedReversedList[i]===3)
+      { 
+          mappedReverseRomanList.push('I'.repeat(t));
+      }
+      
+      else if (decomposedReversedList[i]===6||decomposedReversedList[i]===7||decomposedReversedList[i]===8)
+      {
+          mappedReverseRomanList.push(("V"+'I'.repeat(t-5)));
+      }
+      
+      else if(decomposedReversedList[i]===60||decomposedReversedList[i]===70||decomposedReversedList[i]===80)
+      {
+          mappedReverseRomanList.push('L'+('X'.repeat(t-5)));
+      }
+      else if(decomposedReversedList[i]===100||decomposedReversedList[i]===200||decomposedReversedList[i]===300)
+      { 
+          mappedReverseRomanList.push('C'.repeat(t));
+      }
+
+      else if(decomposedReversedList[i]===600||decomposedReversedList[i]===700||decomposedReversedList[i]===800)
+      {
+          mappedReverseRomanList.push(('D'+'C'.repeat(t-5)));
+      }
+      
+      else if (decomposedReversedList[i]===1000||decomposedReversedList[i]===2000)
+      {   
+          mappedReverseRomanList.push('M'.repeat(t));
+      }
+      else if(decomposedReversedList[i]===10||decomposedReversedList[i]===20||decomposedReversedList[i]===30)
+      { 
+        mappedReverseRomanList.push('X'.repeat(t));
+      }
+      
+      else if(decomposedReversedList[i]===60||decomposedReversedList[i]===70||decomposedReversedList[i]===80)
+      {
+          mappedReverseRomanList.push(('L'+('X'.repeat(t-5))));
+      }
+      
+      else {
+        mappedReverseRomanList.push(arabicToRomanMap[decomposedReversedList[i]]);
+      }
+      
     }
-    return romanResult;    
+   
+    return mappedReverseRomanList.reverse().join('');
+   
 }
 
 var roman = ['M','D','C','L','X','V','I'];
@@ -203,22 +162,15 @@ function isRoman(input)
 
 } 
 
-
+function characterIsNotValidRoman(character) {
+  return (romanToArabicMap.indexOf(character) < 0);  
+}
 
 function romanRuleForCharacterOrder(character1InSequence, character2InSequence)
 {
   if(romanToArabicMap[character1InSequence] < romanToArabicMap[character2InSequence])
   {
-      if((romanToArabicMap[character1InSequence] * 10) < romanToArabicMap[character2InSequence])
-      {
-        return false;
-      }
-
-      else
-      {
-        return true;
-      }
-      
+      return((romanToArabicMap[character1InSequence] * 10) < romanToArabicMap[character2InSequence]);   
   }
   else
       {
