@@ -7,18 +7,19 @@ const fs = require('fs');
 
 var arabicToRomanMap = {
     1:"I",
-    5:"V",
-    10:"X",
-    50:"L",
-    100:"C",
-    500:"D",
-    1000:"M",
     4: "IV",
+    5:"V",
     9: "IX",
-    400: "CD",
-    900: "CM",
+    10:"X",
     40: "XL",
-    90: "XC"
+    50:"L",
+    90: "XC",
+    100:"C",
+    400: "CD",
+    500:"D",
+    900: "CM",
+    1000:"M"
+        
 };
 
     
@@ -37,7 +38,7 @@ function decomposedNumbers(input)
         n = parseInt(currentValue);
         return (currentValue * Math.pow(10,k));
     });
-    
+
     return decomposedPowerOfTenDigits;
 
 }
@@ -51,7 +52,7 @@ function isNumberInRange(input)
 //to check the validity of the Arabic number input
 function isNumber(input)
 {
-    return !isNaN(input);
+    return !Number.isNaN(input);
 }
 
 function debugCallers(fnName, input, output) {
@@ -143,27 +144,16 @@ function isRoman(input)
     for (var i = 0; i < length; i++) {
         j = i;
         
-        if (!isCharacterPresentInRomanArray(input[i]) &&
-            !romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]) &&
-            !romanRuleForV(input[i], input [i+1]) &&
-            !romanRuleForL(input[i], input[i+1]) &&
-            !romanRuleForX(input[i], input[i+1], input[i+2], input[i+3]))
-        {
-          return false;
-        }
-        else
-        {
-          return true;
-        }
-
+        return (isInvalidRomanCharacter(input[i]) &&
+            romanRuleForI(input[i], input[i+1], input[i+2], input[i+3]) &&
+            romanRuleForV(input[i], input [i+1]) &&
+            romanRuleForL(input[i], input[i+1]) &&
+            romanRuleForX(input[i], input[i+1], input[i+2], input[i+3]));
+        
     };
    return true;
 
 } 
-
-function characterIsNotValidRoman(character) {
-  return (romanToArabicMap.indexOf(character) < 0);  
-}
 
 function romanRuleForCharacterOrder(character1InSequence, character2InSequence)
 {
@@ -177,65 +167,29 @@ function romanRuleForCharacterOrder(character1InSequence, character2InSequence)
       }
 }
 
-function isCharacterPresentInRomanArray(character)
+function isInvalidRomanCharacter(character)
 {
-
-  if(roman.indexOf(character) === -1)
-  {
-    return false;
-  } 
-  else
-  {
-    return true;
-  }
+  return !(roman.indexOf(character) === -1)
 } 
 
 function romanRuleForI(character1InSequence, character2InSequence, character3InSequence, character4InSequence)
 {
-  if(character1InSequence === 'I' && character2InSequence === 'I' && character3InSequence === 'I' && character4InSequence === 'I')
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
+  return !(character1InSequence === 'I' && character2InSequence === 'I' && character3InSequence === 'I' && character4InSequence === 'I')
 }   
 
 function romanRuleForV(character1InSequence, character2InSequence)
 {
-  if(character1InSequence === 'V' && character2InSequence === 'V')
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
+  return !(character1InSequence === 'V' && character2InSequence === 'V')
 }
 
 function romanRuleForL(character1InSequence, character2InSequence)
 {
-  if(character1InSequence === 'L' && character2InSequence === 'L')
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
+  return !(character1InSequence === 'L' && character2InSequence === 'L')
 }
 
 function romanRuleForX(character1InSequence, character2InSequence, character3InSequence, character4InSequence)
 {
-  if(character1InSequence === 'X' && character2InSequence === 'X' && character3InSequence === 'X' && character4InSequence === 'X')
-  {
-    return false;
-  }
-  else
-  {
-    return true;
-  }
+  return !(character1InSequence === 'X' && character2InSequence === 'X' && character3InSequence === 'X' && character4InSequence === 'X')
 }
 
 // split the Roman numerals into individual arabic numbers
