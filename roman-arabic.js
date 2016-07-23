@@ -26,18 +26,14 @@ var arabicToRomanMap = {
 // split the number into 1000s, 100s, 10s and 1s
 function decomposedNumbers(input) {
     var inputLength = input.toString().length;
-    // var k, n;
 
     var decomposedDigits = input.split("");
 
-    var decomposedPowerOfTenDigits = decomposedDigits.map(function(currentValue, i) {
-        var k, n;
-        k = inputLength - i - 1;
-        n = parseInt(currentValue);
-        return (currentValue * Math.pow(10, k));
+    return decomposedDigits.map(function(currentValue, i) {
+        var exponent = inputLength - i - 1;
+        var digitExtracted = parseInt(currentValue);
+        return (digitExtracted * Math.pow(10, exponent));
     });
-
-    return decomposedPowerOfTenDigits;
 
 }
 
