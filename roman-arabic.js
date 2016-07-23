@@ -194,26 +194,11 @@ function romanRuleForX(character1InSequence, character2InSequence, character3InS
 
 // split the Roman numerals into individual arabic numbers
 function splitRomanNumbers(input)
-{
-    var equavalentRomanCharacterArray = [];
-    var len = input.length;
-    for (var i = 0; i < len; i++) 
-    {
-        if (input[i] === 'M')
-            equavalentRomanCharacterArray[i]=1000;
-        else if (input[i] === 'D')
-            equavalentRomanCharacterArray[i]=500;
-        else if (input[i] === 'C')
-            equavalentRomanCharacterArray[i]=100;
-        else if (input[i] === 'L')
-            equavalentRomanCharacterArray[i]=50;
-        else if (input[i] === 'X')
-            equavalentRomanCharacterArray[i]=10;
-        else if (input[i] === 'V')
-            equavalentRomanCharacterArray[i]=5
-        else if (input[i] === 'I')
-            equavalentRomanCharacterArray[i]=1;
-    };
+{    
+    var inputArr = input.split(""); //need to convert to array for map function
+    var equavalentRomanCharacterArray = inputArr.map(function(value, i){
+        return romanToArabicMap[value];
+    });
 
     return equavalentRomanCharacterArray;
 }
