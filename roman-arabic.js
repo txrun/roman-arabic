@@ -27,18 +27,17 @@ function decomposedNumbers(input)
 {
     var decomposedPowerOfTenDigits = [];
     var inputLength = input.toString().length;
-    var k = 0;
-    
-    
-    k = inputLength - 1;
-    var j=0;
-    var decomposedDigits = input.split("");
-    decomposedDigits.forEach(function (value, i){
-      decomposedPowerOfTenDigits[j] = value * Math.pow(10,k);
-      j++;
-      k--;
-    });
+    var k, n;    
+    var i = 0;
 
+    var decomposedDigits = input.split("");
+
+    var decomposedPowerOfTenDigits = decomposedDigits.map(function(currentValue, i){
+        k = inputLength - i -1;
+        n = parseInt(currentValue);
+        return (currentValue * Math.pow(10,k));
+    });
+    
     return decomposedPowerOfTenDigits;
 
 }
@@ -83,7 +82,7 @@ function arabicToRoman(userInput)
       
       else if (decomposedReversedList[i]===6||decomposedReversedList[i]===7||decomposedReversedList[i]===8)
       {
-          mappedReverseRomanList.push(("V"+'I'.repeat(t-5)));
+          mappedReverseRomanList.push("V"+('I'.repeat(t-5)));
       }
       
       else if(decomposedReversedList[i]===60||decomposedReversedList[i]===70||decomposedReversedList[i]===80)
