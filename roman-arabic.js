@@ -176,9 +176,8 @@ function romanToArabic(input) {
 }
 
 const fileInput = readline.createInterface({
-    input: fs.createReadStream('inputFile.txt')
+    input: fs.createReadStream(process.argv[2])
 });
-
 
 fileInput.on('line', (line) => {
 
