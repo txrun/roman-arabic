@@ -5,7 +5,7 @@
 const readline = require('readline');
 const fs = require('fs');
 
-var arabicToRomanMap = {
+const arabicToRomanMap = {
     1: "I",
     4: "IV",
     5: "V",
@@ -32,11 +32,10 @@ var arabicToRomanMap = {
 
 // split the number into 1000s, 100s, 10s and 1s
 function decomposedNumbers(input) {
-    var inputLength = input.toString().length;
-
     var decomposedDigits = input.split("");
 
-    return decomposedDigits.map(function(currentValue, i) {
+    return decomposedDigits.map(function(currentValue, i, decomposedDigitArray) {
+        var inputLength = decomposedDigitArray.length;
         var exponent = inputLength - i - 1;
         var digitExtracted = parseInt(currentValue);
         return (digitExtracted * Math.pow(10, exponent));
@@ -61,45 +60,38 @@ function debugCallers(fnName, input, output) {
 // write the split numbers in terms of Roman numerals' values
 function arabicToRoman(userInput) {
     var decomposedList = decomposedNumbers(userInput);
-    var len = userInput.toString().length;
-    var t = 0;
-
     var decomposedReversedList = decomposedList.reverse();
 
-    var mappedReverseRomanList = [];
+    var mappedReverseRomanList = decomposedReversedList.map(function(currentValue, i){
+        var t = currentValue / (Math.pow(10, i));
 
-    for (var i = 0; i < len; i++) {
-
-        t = decomposedReversedList[i] / (Math.pow(10, i));
-
-        if (decomposedReversedList[i] === 1 || decomposedReversedList[i] === 2 || decomposedReversedList[i] === 3) {
-            mappedReverseRomanList.push('I'.repeat(t));
-        } else if (decomposedReversedList[i] === 6 || decomposedReversedList[i] === 7 || decomposedReversedList[i] === 8) {
-            mappedReverseRomanList.push("V" + ('I'.repeat(t - 5)));
-        } else if (decomposedReversedList[i] === 60 || decomposedReversedList[i] === 70 || decomposedReversedList[i] === 80) {
-            mappedReverseRomanList.push('L' + ('X'.repeat(t - 5)));
-        } else if (decomposedReversedList[i] === 100 || decomposedReversedList[i] === 200 || decomposedReversedList[i] === 300) {
-            mappedReverseRomanList.push('C'.repeat(t));
-        } else if (decomposedReversedList[i] === 600 || decomposedReversedList[i] === 700 || decomposedReversedList[i] === 800) {
-            mappedReverseRomanList.push(('D' + 'C'.repeat(t - 5)));
-        } else if (decomposedReversedList[i] === 1000 || decomposedReversedList[i] === 2000) {
-            mappedReverseRomanList.push('M'.repeat(t));
-        } else if (decomposedReversedList[i] === 10 || decomposedReversedList[i] === 20 || decomposedReversedList[i] === 30) {
-            mappedReverseRomanList.push('X'.repeat(t));
-        } else if (decomposedReversedList[i] === 60 || decomposedReversedList[i] === 70 || decomposedReversedList[i] === 80) {
-            mappedReverseRomanList.push(('L' + ('X'.repeat(t - 5))));
+        if (currentValue === 1 || currentValue === 2 || currentValue === 3) {
+            return ('I'.repeat(t));
+        } else if (currentValue === 6 || currentValue === 7 || currentValue === 8) {
+            return ("V" + ('I'.repeat(t - 5)));
+        } else if (currentValue === 60 || currentValue === 70 || currentValue === 80) {
+            return ('L' + ('X'.repeat(t - 5)));
+        } else if (currentValue === 100 || currentValue === 200 || currentValue === 300) {
+            return ('C'.repeat(t));
+        } else if (currentValue === 600 || currentValue === 700 || currentValue === 800) {
+            return (('D' + 'C'.repeat(t - 5)));
+        } else if (currentValue === 1000 || currentValue === 2000) {
+            return ('M'.repeat(t));
+        } else if (currentValue === 10 || currentValue === 20 || currentValue === 30) {
+            return ('X'.repeat(t));
+        } else if (currentValue === 60 || currentValue === 70 || currentValue === 80) {
+            return (('L' + ('X'.repeat(t - 5))));
         } else {
-            mappedReverseRomanList.push(arabicToRomanMap[decomposedReversedList[i]]);
+            return (arabicToRomanMap[currentValue]);
         }
 
-    }
+    });
 
     return mappedReverseRomanList.reverse().join('');
-
 }
 
 var roman = ['M', 'D', 'C', 'L', 'X', 'V', 'I'];
-var romanToArabicMap = {
+const romanToArabicMap = {
     I: 1,
     V: 5,
     X: 10,
@@ -113,6 +105,8 @@ var romanToArabicMap = {
 function isRoman(input) {
     var length = input.length;
     for (var i = 0; i < length; i++) {
+        // if((i+3) % length === i+3)
+        //     var tempArray = input.slice(i, i+3);
         return (isInvalidRomanCharacter(input[i]) &&
             invalidRomanRuleForI(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
             invalidRomanRuleForV(input[i], input[i + 1]) &&
@@ -132,6 +126,11 @@ function invalidRomanRuleForCharacterOrder(character1InSequence, character2InSeq
         return true;
     }
 }
+
+// function invalidRomanRuleForCharacterOrder(tempArray, index)
+// {
+
+// }
 
 function isInvalidRomanCharacter(character) {
     return (roman.indexOf(character) != -1);
