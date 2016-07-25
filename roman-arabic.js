@@ -19,8 +19,15 @@ var arabicToRomanMap = {
     500: "D",
     900: "CM",
     1000: "M"
-
 };
+
+// Array.prototype.foobar = function(x, y) {
+
+// }
+
+// var x = [1,2,3,4];
+
+// x.foobar("x", "y");
 
 
 // split the number into 1000s, 100s, 10s and 1s
@@ -107,18 +114,18 @@ function isRoman(input) {
     var length = input.length;
     for (var i = 0; i < length; i++) {
         return (isInvalidRomanCharacter(input[i]) &&
-            romanRuleForI(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
-            romanRuleForV(input[i], input[i + 1]) &&
-            romanRuleForL(input[i], input[i + 1]) &&
-            romanRuleForX(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
-            romanRuleForCharacterOrder(input[i], input[i+1]));
+            invalidRomanRuleForI(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
+            invalidRomanRuleForV(input[i], input[i + 1]) &&
+            invalidRomanRuleForL(input[i], input[i + 1]) &&
+            invalidRomanRuleForX(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
+            invalidRomanRuleForCharacterOrder(input[i], input[i+1]));
 
     }
     return true;
 
 }
 
-function romanRuleForCharacterOrder(character1InSequence, character2InSequence) {
+function invalidRomanRuleForCharacterOrder(character1InSequence, character2InSequence) {
     if (romanToArabicMap[character1InSequence] < romanToArabicMap[character2InSequence]) {
         return ((romanToArabicMap[character1InSequence] * 10) < romanToArabicMap[character2InSequence]);
     } else {
@@ -130,19 +137,19 @@ function isInvalidRomanCharacter(character) {
     return (roman.indexOf(character) != -1);
 }
 
-function romanRuleForI(character1InSequence, character2InSequence, character3InSequence, character4InSequence) {
+function invalidRomanRuleForI(character1InSequence, character2InSequence, character3InSequence, character4InSequence) {
     return !(character1InSequence === 'I' && character2InSequence === 'I' && character3InSequence === 'I' && character4InSequence === 'I');
 }
 
-function romanRuleForV(character1InSequence, character2InSequence) {
+function invalidRomanRuleForV(character1InSequence, character2InSequence) {
     return !(character1InSequence === 'V' && character2InSequence === 'V');
 }
 
-function romanRuleForL(character1InSequence, character2InSequence) {
+function invalidRomanRuleForL(character1InSequence, character2InSequence) {
     return !(character1InSequence === 'L' && character2InSequence === 'L');
 }
 
-function romanRuleForX(character1InSequence, character2InSequence, character3InSequence, character4InSequence) {
+function invalidRomanRuleForX(character1InSequence, character2InSequence, character3InSequence, character4InSequence) {
     return !(character1InSequence === 'X' && character2InSequence === 'X' && character3InSequence === 'X' && character4InSequence === 'X');
 }
 
@@ -150,23 +157,22 @@ function romanRuleForX(character1InSequence, character2InSequence, character3InS
 
 // converting roman numerals to arabic
 function romanToArabic(input) {
-    var inputArr = input.split("");
+    var romanCharacterArray = input.split("");
 
-    var arabicValue = inputArr.reduce(function(total, currentValue, i, romanArr) {
+    return romanCharacterArray.reduce(function(total, currentValue, i, romanArr) {
         
         if (i !== 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i-1]]) {
             return total;
         } 
         else if (romanToArabicMap[currentValue] < romanToArabicMap[romanArr[i + 1]]) {
-            total += romanToArabicMap[inputArr[i + 1]] - romanToArabicMap[currentValue];
+            total += romanToArabicMap[romanCharacterArray[i + 1]] - romanToArabicMap[currentValue];
             return total;
         } 
         else {
             total += romanToArabicMap[currentValue];
             return total;
         }
-    }, 0);
-    return arabicValue;
+    }, 0);  //
 
 }
 
