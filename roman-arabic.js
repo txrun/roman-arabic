@@ -18,27 +18,18 @@ const arabicToRomanMap = {
     400: "CD",
     500: "D",
     900: "CM",
-    1000: "M"
+    1000: "M",
+    2000: "MM"
 };
-
-// split the number into individual numbers
-function decomposedNumbers(input) {
-    var decomposedDigits = input.split("");
-    return decomposedDigits;   
-}
 
 // to check if numbers are in range
 function isNumberInRange(input) {
-    return (input >= 1 && input <= 2999);
+    return (input >= 1 && input <= 3999);
 }
 
 // to check the validity of the Arabic number input
 function isNumber(input) {
     return !Number.isNaN(input);
-}
-
-function debugCallers(fnName, input, output) {
-    console.log(`Calling function: ${fnName} with: ${input} and got output: ${output}`);
 }
 
 // write the split numbers in terms of Roman numerals' values
@@ -54,12 +45,10 @@ function arabicToRoman(userInput) {
             return arabicToRomanMap[powerOfTensValue];
         else if (powerOfTensValue < (5 * tensPower))
             return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
-        else
-        {
+        else{
             var diff = powerOfTensValue - (5 * tensPower);
             return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
         }
-        
     });
     return mappedRomanList.join('');
 }
@@ -80,25 +69,21 @@ function isRoman(input) {
     for (var i = 0; i < length; i++) {
         if (invalidRomanRuleForIXC(input, i) || invalidRomanRuleForVLD(input, i) ||
             invalidRomanRuleForCharacterOrder(input, i) || invalidRomanRuleForCharacterOrder(input, i) || 
-            isInvalidRomanCharacter(input[i])) 
-        {   
+            isInvalidRomanCharacter(input[i])) {   
             return false;
         }
-
     }
     return true;
-
 }
 
 function invalidRomanRuleForCharacterOrder(tempArray, i) {
-    for(var j =i;j < tempArray.length-1; j++){
+    for(var j = i;j < tempArray.length - 1; j++) {
         if (romanToArabicMap[tempArray[j]] < romanToArabicMap[tempArray[j+1]]) {
-        if((romanToArabicMap[tempArray[j]] * 10) < romanToArabicMap[tempArray[j+1]])
-            return true;
+            if((romanToArabicMap[tempArray[j]] * 10) < romanToArabicMap[tempArray[j+1]])
+                return true;
         } 
     }
     return false;
-   
 }
 
 function isInvalidRomanCharacter(character) {
@@ -110,9 +95,7 @@ function isInvalidRomanCharacter(character) {
 
 function invalidRomanRuleForIXC(tempArray, i) 
 {   for (var j = i; j < tempArray.length-3; j++) {
-        if((tempArray[j] === 'I' && tempArray[j+1] === 'I' && tempArray[j+2] === 'I' && tempArray[j+3] === 'I') ||
-            (tempArray[j] === 'X' && tempArray[j+1] === 'X' && tempArray[j+2] === 'X' && tempArray[j+3] === 'X') ||
-            (tempArray[j] === 'C' && tempArray[j+1] === 'C' && tempArray[j+2] === 'C' && tempArray[j+3] === 'C'))
+        if(tempArray.slice(j, j+4) === "IIII" || tempArray.slice(j, j+4) === "XXXX" || tempArray.slice(j, j+4) === "CCCC")
             return true;
     }
     return false;
@@ -120,8 +103,7 @@ function invalidRomanRuleForIXC(tempArray, i)
 
 function invalidRomanRuleForVLD(tempArray, i) {
    for (var j = i; j < tempArray.length-1; j++) {
-        if((tempArray[j] === 'L' && tempArray[j+1] === 'L') || (tempArray[j] === 'D' && tempArray[j+1] === 'D') ||
-         (tempArray[j] === 'V' && tempArray[j+1] === 'V'))
+        if((tempArray.slice(j, j+2) === "LL" || tempArray.slice(j, j+2) === "DD" || tempArray.slice(j, j+2) === "VVV"))
             return true;
     }
     return false;
@@ -133,26 +115,21 @@ function romanToArabic(input) {
 
     return romanCharacterArray.reduce(function(total, currentValue, i, romanArr) {
         
-        if (i !== 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i-1]]) {
+        if (i > 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i-1]]) {
             return total;
-        } 
-        else if (romanToArabicMap[currentValue] < romanToArabicMap[romanArr[i + 1]]) {
+        } else if (romanToArabicMap[currentValue] < romanToArabicMap[romanArr[i + 1]]) {
             total += romanToArabicMap[romanCharacterArray[i + 1]] - romanToArabicMap[currentValue];
             return total;
-        } 
-        else {
+        } else {
             total += romanToArabicMap[currentValue];
             return total;
         }
     }, 0);  
-
 }
 
 const fileInput = readline.createInterface({
 
-    input: fs.createReadStream("inputFile.txt")
-    // input: fs.createReadStream(process.argv[2])
-
+    input: fs.createReadStream(process.argv[2])
 });
 
 fileInput.on('line', (line) => {
@@ -161,8 +138,8 @@ fileInput.on('line', (line) => {
         var romanNumber = arabicToRoman(line);
         console.log(romanNumber);
     } else if (isRoman(line)) {
-        var theRomanResult = romanToArabic(line);
-        console.log(theRomanResult);
+        var arabicNumber = romanToArabic(line);
+        console.log(arabicNumber);
     } else {
         console.log("Not a valid input!");
     }
