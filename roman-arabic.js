@@ -21,15 +21,6 @@ const arabicToRomanMap = {
     1000: "M"
 };
 
-// Array.prototype.foobar = function(x, y) {
-
-// }
-
-// var x = [1,2,3,4];
-
-// x.foobar("x", "y");
-
-
 // split the number into 1000s, 100s, 10s and 1s
 function decomposedNumbers(input) {
     var decomposedDigits = input.split("");
@@ -61,30 +52,35 @@ function debugCallers(fnName, input, output) {
 function arabicToRoman(userInput) {
     var decomposedList = decomposedNumbers(userInput);
     var decomposedReversedList = decomposedList.reverse();
+    var diff = 0;
 
     var mappedReverseRomanList = decomposedReversedList.map(function(currentValue, i){
-        var t = currentValue / (Math.pow(10, i));
+        var tensPower = Math.pow(i, 10);
+        var powerOfTensValue = arabicToRomanMap[currentValue] * tensPower;
 
-        if (currentValue === 1 || currentValue === 2 || currentValue === 3) {
-            return ('I'.repeat(t));
-        } else if (currentValue === 6 || currentValue === 7 || currentValue === 8) {
-            return ("V" + ('I'.repeat(t - 5)));
-        } else if (currentValue === 60 || currentValue === 70 || currentValue === 80) {
-            return ('L' + ('X'.repeat(t - 5)));
-        } else if (currentValue === 100 || currentValue === 200 || currentValue === 300) {
-            return ('C'.repeat(t));
-        } else if (currentValue === 600 || currentValue === 700 || currentValue === 800) {
-            return (('D' + 'C'.repeat(t - 5)));
-        } else if (currentValue === 1000 || currentValue === 2000) {
-            return ('M'.repeat(t));
-        } else if (currentValue === 10 || currentValue === 20 || currentValue === 30) {
-            return ('X'.repeat(t));
-        } else if (currentValue === 60 || currentValue === 70 || currentValue === 80) {
-            return (('L' + ('X'.repeat(t - 5))));
-        } else {
-            return (arabicToRomanMap[currentValue]);
+
+        if(arabicToRomanMap[powerOfTensValue])
+        {   
+            return arabicToRomanMap[powerOfTensValue];
+            
         }
+        else
+        {
+            if(arabicToRomanMap[powerOfTensValue] < (5 * tensPower))
+            {
 
+            }
+            else if(arabicToRomanMap[powerOfTensValue] > (5 * tensPower))
+            {
+                diff = arabicToRomanMap[powerOfTensValue] - (5 * tensPower);
+                return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
+            }
+            else if(arabicToRomanMap[powerOfTensValue] === (5 * tensPower))
+            {
+                return  (arabicToRomanMap[5 * tensPower]);
+            }
+        }
+        
     });
 
     return mappedReverseRomanList.reverse().join('');
@@ -92,27 +88,27 @@ function arabicToRoman(userInput) {
 
 var roman = ['M', 'D', 'C', 'L', 'X', 'V', 'I'];
 const romanToArabicMap = {
-    I: 1,
-    V: 5,
-    X: 10,
-    L: 50,
-    C: 100,
-    D: 500,
-    M: 1000
+    "I": 1,
+    "V": 5,
+    "X": 10,
+    "L": 50,
+    "C": 100,
+    "D": 500,
+    "M": 1000
 };
 
-// to check the correctness of the Roman numeral input
 function isRoman(input) {
     var length = input.length;
     for (var i = 0; i < length; i++) {
-        // if((i+3) % length === i+3)
-        //     var tempArray = input.slice(i, i+3);
-        return (isInvalidRomanCharacter(input[i]) &&
-            invalidRomanRuleForI(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
-            invalidRomanRuleForV(input[i], input[i + 1]) &&
-            invalidRomanRuleForL(input[i], input[i + 1]) &&
-            invalidRomanRuleForX(input[i], input[i + 1], input[i + 2], input[i + 3]) &&
-            invalidRomanRuleForCharacterOrder(input[i], input[i+1]));
+               console.log(input);
+        if (invalidRomanRuleForI(input, i))
+        {   
+            return false;
+        }
+        else 
+        {   
+            return true;
+        }
 
     }
     return true;
@@ -121,37 +117,47 @@ function isRoman(input) {
 
 function invalidRomanRuleForCharacterOrder(character1InSequence, character2InSequence) {
     if (romanToArabicMap[character1InSequence] < romanToArabicMap[character2InSequence]) {
-        return ((romanToArabicMap[character1InSequence] * 10) < romanToArabicMap[character2InSequence]);
-    } else {
+        if((romanToArabicMap[character1InSequence] * 10) < romanToArabicMap[character2InSequence])
+            return false;
+
+        } else {
         return true;
     }
 }
 
-// function invalidRomanRuleForCharacterOrder(tempArray, index)
-// {
-
-// }
 
 function isInvalidRomanCharacter(character) {
     return (roman.indexOf(character) != -1);
 }
 
 function invalidRomanRuleForI(character1InSequence, character2InSequence, character3InSequence, character4InSequence) {
-    return !(character1InSequence === 'I' && character2InSequence === 'I' && character3InSequence === 'I' && character4InSequence === 'I');
+    return (character1InSequence === 'I' && character2InSequence === 'I' && character3InSequence === 'I' && character4InSequence === 'I');
+}
+
+function invalidRomanRuleForI(tempArray, i)
+{   
+    var sum = 0;
+    for (var j = i; j < tempArray.length; j++) {
+        if(tempArray[j] === 'I')
+            sum ++;
+    }
+    if (sum>3)
+        return true;
+    else
+        return false;
 }
 
 function invalidRomanRuleForV(character1InSequence, character2InSequence) {
-    return !(character1InSequence === 'V' && character2InSequence === 'V');
+    return (character1InSequence === 'V' && character2InSequence === 'V');
 }
 
 function invalidRomanRuleForL(character1InSequence, character2InSequence) {
-    return !(character1InSequence === 'L' && character2InSequence === 'L');
+    return (character1InSequence === 'L' && character2InSequence === 'L');
 }
 
 function invalidRomanRuleForX(character1InSequence, character2InSequence, character3InSequence, character4InSequence) {
-    return !(character1InSequence === 'X' && character2InSequence === 'X' && character3InSequence === 'X' && character4InSequence === 'X');
+    return (character1InSequence === 'X' && character2InSequence === 'X' && character3InSequence === 'X' && character4InSequence === 'X');
 }
-
 
 
 // converting roman numerals to arabic
@@ -171,12 +177,14 @@ function romanToArabic(input) {
             total += romanToArabicMap[currentValue];
             return total;
         }
-    }, 0);  //
+    }, 0);  
 
 }
 
 const fileInput = readline.createInterface({
-    input: fs.createReadStream(process.argv[2])
+
+    input: fs.createReadStream("inputFile.txt")
+
 });
 
 fileInput.on('line', (line) => {
