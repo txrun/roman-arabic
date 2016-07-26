@@ -43,41 +43,25 @@ function debugCallers(fnName, input, output) {
 
 // write the split numbers in terms of Roman numerals' values
 function arabicToRoman(userInput) {
-    var decomposedList = decomposedNumbers(userInput);
-    var decomposedReversedList = decomposedList.reverse();
-    var diff = 0;
-    var tensPower = 0;
-    var powerOfTensValue;
-
-    var mappedReverseRomanList = decomposedReversedList.map(function(currentValue, i){
-        tensPower = Math.pow(10, i);
-        powerOfTensValue = currentValue * tensPower;
+    var decomposedDigits = userInput.split("");
+    
+    var mappedRomanList = decomposedDigits.map(function(currentValue, i){
+        var exponent = decomposedDigits.length -i -1;
+        var tensPower = Math.pow(10, exponent);
+        var powerOfTensValue = currentValue * tensPower;
 
         if(arabicToRomanMap[powerOfTensValue])
-        {   
             return arabicToRomanMap[powerOfTensValue];
-            
-        }
+        else if (powerOfTensValue < (5 * tensPower))
+            return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
         else
         {
-            if(powerOfTensValue < (5 * tensPower))
-            {
-                return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
-            }
-            else if(powerOfTensValue > (5 * tensPower))
-            {
-                diff = powerOfTensValue - (5 * tensPower);
-                return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
-            }
-            else if(powerOfTensValue === (5 * tensPower))
-            {
-                return  (arabicToRomanMap[5 * tensPower]);
-            }
+            var diff = powerOfTensValue - (5 * tensPower);
+            return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
         }
         
     });
-
-    return mappedReverseRomanList.reverse().join('');
+    return mappedRomanList.join('');
 }
 
 var roman = ['M', 'D', 'C', 'L', 'X', 'V', 'I'];
