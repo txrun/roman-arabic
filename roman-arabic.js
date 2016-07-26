@@ -73,13 +73,12 @@ function isRoman(input) {
     return true;
 }
 
-function invalidRomanRuleForCharacterOrder(tempArray, i) {
-    for(var j = i;j < tempArray.length - 1; j++) {
-        if (romanToArabicMap[tempArray[j]] < romanToArabicMap[tempArray[j+1]]) {
-            if((romanToArabicMap[tempArray[j]] * 10) < romanToArabicMap[tempArray[j+1]])
-                return true;
-        } 
-    }
+function invalidRomanRuleForCharacterOrder(romanCharacterArray, i) {
+    if (romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i+1]]) {
+        if((romanToArabicMap[romanCharacterArray[i]] * 10) < romanToArabicMap[romanCharacterArray[i+1]])
+            return true;
+    } 
+    
     return false;
 }
 
@@ -88,20 +87,14 @@ function isInvalidRomanCharacter(character) {
     
 }
 
-function invalidRomanRuleForIXC(tempArray, i) 
-{   for (var j = i; j < tempArray.length-3; j++) {
-        if(tempArray.slice(j, j+4) === "IIII" || tempArray.slice(j, j+4) === "XXXX" || tempArray.slice(j, j+4) === "CCCC")
-            return true;
-    }
-    return false;
+function invalidRomanRuleForIXC(romanCharacterArray, i) {   
+    return(romanCharacterArray.slice(i, i+4) === "IIII" || romanCharacterArray.slice(i, i+4) === "XXXX" || 
+        romanCharacterArray.slice(i, i+4) === "CCCC");
 }
 
-function invalidRomanRuleForVLD(tempArray, i) {
-   for (var j = i; j < tempArray.length-1; j++) {
-        if((tempArray.slice(j, j+2) === "LL" || tempArray.slice(j, j+2) === "DD" || tempArray.slice(j, j+2) === "VVV"))
-            return true;
-    }
-    return false;
+function invalidRomanRuleForVLD(romanCharacterArray, i) {
+   return((romanCharacterArray.slice(i, i+2) === "LL" || romanCharacterArray.slice(i, i+2) === "DD" || 
+    romanCharacterArray.slice(i, i+2) === "VVV"));
 }
 
 // converting roman numerals to arabic
