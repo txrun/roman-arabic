@@ -25,7 +25,7 @@ const arabicToRomanMap = {
 // to check if numbers are in range
 function isNumberInRange(input) {
     var integerNumber = parseInt(input);
-    if(!Number.isNaN(integerNumber) && (integerNumber >=1 && integerNumber <=3999))
+    if(!Number.isNaN(integerNumber) && integerNumber >=1 && integerNumber <=3999)
         return (integerNumber);
 }
 
