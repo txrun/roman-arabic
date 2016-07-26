@@ -74,12 +74,9 @@ function isRoman(input) {
 }
 
 function invalidRomanRuleForCharacterOrder(romanCharacterArray, i) {
-    if (romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i+1]]) {
-        if((romanToArabicMap[romanCharacterArray[i]] * 10) < romanToArabicMap[romanCharacterArray[i+1]])
-            return true;
-    } 
-    
-    return false;
+    return (romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i+1]] &&
+        (romanToArabicMap[romanCharacterArray[i]] * 10) < romanToArabicMap[romanCharacterArray[i+1]]);
+
 }
 
 function isInvalidRomanCharacter(character) {
@@ -88,13 +85,13 @@ function isInvalidRomanCharacter(character) {
 }
 
 function invalidRomanRuleForIXC(romanCharacterArray, i) {   
-    return(romanCharacterArray.slice(i, i+4) === "IIII" || romanCharacterArray.slice(i, i+4) === "XXXX" || 
-        romanCharacterArray.slice(i, i+4) === "CCCC");
+    return((romanCharacterArray.slice(i, i+4) === "IIII") || (romanCharacterArray.slice(i, i+4) === "XXXX") || 
+        (romanCharacterArray.slice(i, i+4) === "CCCC"));
 }
 
 function invalidRomanRuleForVLD(romanCharacterArray, i) {
-   return((romanCharacterArray.slice(i, i+2) === "LL" || romanCharacterArray.slice(i, i+2) === "DD" || 
-    romanCharacterArray.slice(i, i+2) === "VVV"));
+   return((romanCharacterArray.slice(i, i+2) === "LL" )|| (romanCharacterArray.slice(i, i+2) === "DD") || 
+    (romanCharacterArray.slice(i, i+2) === "VVV"));
 }
 
 // converting roman numerals to arabic
