@@ -24,19 +24,20 @@ const arabicToRomanMap = {
 
 // to check if numbers are in range
 function isNumberInRange(input) {
-    return (parseInt(input) >= 1 && parseInt(input) <= 3999);
+    var integerNumber = parseInt(input);
+    return (integerNumber >= 1 && integerNumber <= 3999);
 }
 
 // to check the validity of the Arabic number input
 function isNumber(input) {
-    return !Number.isNaN(input);
+    return !Number.isNaN(parseInt(input));
 }
 
 // write the split numbers in terms of Roman numerals' values
 function arabicToRoman(userInput) {
     var decomposedDigits = userInput.split("");
     
-    var mappedRomanList = decomposedDigits.map(function(currentValue, i){
+    var mappedRomanList = decomposedDigits.map(function(currentValue, i) {
         var exponent = decomposedDigits.length -i -1;
         var tensPower = Math.pow(10, exponent);
         var powerOfTensValue = currentValue * tensPower;
