@@ -99,21 +99,23 @@ function romanToArabic(input) {
 
     return romanCharacterArray.reduce(function(total, currentValue, i, romanArr) {
         
-        if (i > 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i-1]]) {
+        if (i > 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i-1]]) 
             return total;
-        } else if (romanToArabicMap[currentValue] < romanToArabicMap[romanArr[i + 1]]) {
+        
+        if (romanToArabicMap[currentValue] < romanToArabicMap[romanArr[i + 1]]) {
             total += romanToArabicMap[romanCharacterArray[i + 1]] - romanToArabicMap[currentValue];
             return total;
-        } else {
-            total += romanToArabicMap[currentValue];
-            return total;
         }
+        
+        total += romanToArabicMap[currentValue];
+        return total;
+        
     }, 0);  
 }
 
 const fileInput = readline.createInterface({
 
-    input: fs.createReadStream("inputFile.txt")
+    input: fs.createReadStream(process.argv[2])
 });
 
 fileInput.on('line', (line) => {
