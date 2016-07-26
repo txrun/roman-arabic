@@ -25,12 +25,8 @@ const arabicToRomanMap = {
 // to check if numbers are in range
 function isNumberInRange(input) {
     var integerNumber = parseInt(input);
-    return (integerNumber >= 1 && integerNumber <= 3999);
-}
-
-// to check the validity of the Arabic number input
-function isNumber(input) {
-    return !Number.isNaN(parseInt(input));
+    if(!Number.isNaN(integerNumber) && (integerNumber >=1 && integerNumber <=3999))
+        return (integerNumber);
 }
 
 // write the split numbers in terms of Roman numerals' values
@@ -135,7 +131,7 @@ const fileInput = readline.createInterface({
 
 fileInput.on('line', (line) => {
 
-    if (isNumber(line) && isNumberInRange(line)) {
+    if (isNumberInRange(line)) {
         var romanNumber = arabicToRoman(line);
         console.log(romanNumber);
     } else if (isRoman(line)) {
