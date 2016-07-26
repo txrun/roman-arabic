@@ -65,8 +65,7 @@ function isRoman(input) {
     var length = input.length;
     for (var i = 0; i < length; i++) {
         if (invalidRomanRuleForIXC(input, i) || invalidRomanRuleForVLD(input, i) ||
-            invalidRomanRuleForCharacterOrder(input, i) || invalidRomanRuleForCharacterOrder(input, i) || 
-            isInvalidRomanCharacter(input[i])) {   
+            invalidRomanRuleForCharacterOrder(input, i) || isInvalidRomanCharacter(input[i])) {   
             return false;
         }
     }
@@ -74,8 +73,8 @@ function isRoman(input) {
 }
 
 function invalidRomanRuleForCharacterOrder(romanCharacterArray, i) {
-    return (romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i+1]] &&
-        (romanToArabicMap[romanCharacterArray[i]] * 10) < romanToArabicMap[romanCharacterArray[i+1]]);
+    return ((romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i+1]]) &&
+        (romanToArabicMap[romanCharacterArray[i]] * 10 < romanToArabicMap[romanCharacterArray[i+1]]));
 
 }
 
@@ -114,7 +113,7 @@ function romanToArabic(input) {
 
 const fileInput = readline.createInterface({
 
-    input: fs.createReadStream(process.argv[2])
+    input: fs.createReadStream("inputFile.txt")
 });
 
 fileInput.on('line', (line) => {
