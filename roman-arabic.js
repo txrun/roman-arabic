@@ -25,12 +25,13 @@ const arabicToRomanMap = {
 function decomposedNumbers(input) {
     var decomposedDigits = input.split("");
 
-    return decomposedDigits.map(function(currentValue, i, decomposedDigitArray) {
-        var inputLength = decomposedDigitArray.length;
-        var exponent = inputLength - i - 1;
-        var digitExtracted = parseInt(currentValue);
-        return (digitExtracted * Math.pow(10, exponent));
-    });
+    return decomposedDigits;
+    // return decomposedDigits.map(function(currentValue, i, decomposedDigitArray) {
+    //     var inputLength = decomposedDigitArray.length;
+    //     var exponent = inputLength - i - 1;
+    //     var digitExtracted = parseInt(currentValue);
+    //     return (digitExtracted * Math.pow(10, exponent));
+    // });
 
 }
 
@@ -53,11 +54,12 @@ function arabicToRoman(userInput) {
     var decomposedList = decomposedNumbers(userInput);
     var decomposedReversedList = decomposedList.reverse();
     var diff = 0;
+    var tensPower = 0;
+    var powerOfTensValue;
 
     var mappedReverseRomanList = decomposedReversedList.map(function(currentValue, i){
-        var tensPower = Math.pow(i, 10);
-        var powerOfTensValue = arabicToRomanMap[currentValue] * tensPower;
-
+        tensPower = Math.pow(10, i);
+        powerOfTensValue = currentValue * tensPower;
 
         if(arabicToRomanMap[powerOfTensValue])
         {   
@@ -66,16 +68,16 @@ function arabicToRoman(userInput) {
         }
         else
         {
-            if(arabicToRomanMap[powerOfTensValue] < (5 * tensPower))
+            if(powerOfTensValue < (5 * tensPower))
             {
-
+                return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
             }
-            else if(arabicToRomanMap[powerOfTensValue] > (5 * tensPower))
+            else if(powerOfTensValue > (5 * tensPower))
             {
-                diff = arabicToRomanMap[powerOfTensValue] - (5 * tensPower);
+                diff = powerOfTensValue - (5 * tensPower);
                 return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
             }
-            else if(arabicToRomanMap[powerOfTensValue] === (5 * tensPower))
+            else if(powerOfTensValue === (5 * tensPower))
             {
                 return  (arabicToRomanMap[5 * tensPower]);
             }
@@ -100,7 +102,6 @@ const romanToArabicMap = {
 function isRoman(input) {
     var length = input.length;
     for (var i = 0; i < length; i++) {
-               console.log(input);
         if (invalidRomanRuleForI(input, i))
         {   
             return false;
