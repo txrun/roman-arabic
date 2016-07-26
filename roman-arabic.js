@@ -24,7 +24,7 @@ const arabicToRomanMap = {
 
 // to check if numbers are in range
 function isNumberInRange(input) {
-    return (input >= 1 && input <= 3999);
+    return (parseInt(input) >= 1 && parseInt(input) <= 3999);
 }
 
 // to check the validity of the Arabic number input
@@ -143,5 +143,4 @@ fileInput.on('line', (line) => {
     } else {
         console.log("Not a valid input!");
     }
-
 });
