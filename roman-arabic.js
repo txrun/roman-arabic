@@ -29,23 +29,23 @@ function isNumberInRange(input) {
         return (integerNumber);
 }
 
-// write the split numbers in terms of Roman numerals' values
+// Converts Arabic numeral into equivalent Roman numeral
 function arabicToRoman(userInput) {
     var decomposedDigits = userInput.split("");
     
     var mappedRomanList = decomposedDigits.map(function(currentValue, i) {
-        var exponent = decomposedDigits.length -i -1;
+        var exponent = decomposedDigits.length - i - 1;
         var tensPower = Math.pow(10, exponent);
         var powerOfTensValue = currentValue * tensPower;
 
         if(arabicToRomanMap[powerOfTensValue])
             return arabicToRomanMap[powerOfTensValue];
-        else if (powerOfTensValue < (5 * tensPower))
+        if (powerOfTensValue < (5 * tensPower))
             return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
-        else{
-            var diff = powerOfTensValue - (5 * tensPower);
-            return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
-        }
+        
+        var diff = powerOfTensValue - (5 * tensPower);
+        return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
+        
     });
     return mappedRomanList.join('');
 }
