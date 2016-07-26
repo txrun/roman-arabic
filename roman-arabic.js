@@ -40,6 +40,7 @@ function arabicToRoman(userInput) {
 
         if(arabicToRomanMap[powerOfTensValue])
             return arabicToRomanMap[powerOfTensValue];
+        
         if (powerOfTensValue < (5 * tensPower))
             return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
         
@@ -50,7 +51,6 @@ function arabicToRoman(userInput) {
     return mappedRomanList.join('');
 }
 
-var roman = ['M', 'D', 'C', 'L', 'X', 'V', 'I'];
 const romanToArabicMap = {
     "I": 1,
     "V": 5,
@@ -84,10 +84,8 @@ function invalidRomanRuleForCharacterOrder(tempArray, i) {
 }
 
 function isInvalidRomanCharacter(character) {
-    if(roman.indexOf(character) === -1)
-        return true;
-    else
-        return false;
+    return (Object.keys(romanToArabicMap).indexOf(character) === -1);
+    
 }
 
 function invalidRomanRuleForIXC(tempArray, i) 
