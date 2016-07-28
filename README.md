@@ -1,134 +1,69 @@
-# roman-arabic
-Converts between roman and arabic numerals
+### How to run this program :
 
-The input is currently hard-coded into two variables - one for the 
-arabic numeral input and a second one that stores the roman numeral 
-input.
-
-The program is run from the terminal using the node command -
+The range of Arabic input vlaues (1-3999) is stored in a file called 
+numbers.txt. This file is given as input during runtime from the 
+terminal.
 ```
-$node roman-arabic.js
+#node roman-arabic.js numbers.txt
 ```
 
-Program Logic - 
+The output from this can be stored into another file roman.txt to verify 
+reverse translation to Arabic values, and the output from this execution 
+is stored into another file numbers-dup.txt.
 
-Translating Arabic to Roman numerals.
-
-The Arabic value to be converted is stored in the variable 
-'someInputNumber'. In the program we have taken someInputNumber=1489. Two 
-functions to check the validity of the number is present - isNumberInRange(),
-to check if the input value is in the permissible range, isNumber(), to check 
-if the input is indeed an Arabic numeral.
-
-This value, 1489, is passed to a function decomposedNumbers() which
-splits up the digits 1,4,8,9 and stores them in an array in the form of
-denominations of power of 10. So in this case - 1000, 400, 80, 9.
-
-Passing these numbers to the function arabicToRoman() to translate them 
-to Roman. Now the symbols of the Roman numeral and equavalent numerical 
-value is as follows -
-I  => 1
-V  => 5
-X  => 10
-L  => 50
-C  => 100
-D  => 500
-M  => 1000
-
-In arabicToRoman(), we check for the length of the number(which is 
-same as length of the array we get from decomposedNumbers().
-
-length(1489) = length([1000,400,80,9]) = 4
-
-After this the denomination of each of the decomposedNumbers is checked 
-for translation. The denomination of the number is identified by 
-calculating the length of the number in the array. So in this case, the 
-first decomposed number is 1000; its length is 4. Similarly, following 
-values 400, 8, and 9 of lengths 3, 2, and 1 have denominations of 100, 
-10, and 1 respectively. This is important as the Roman characters are 
-assigned based on the denomination of the value.
-
-An empty string array romanResult is initialized to store the result.
-
-When length = 4,that means denomination of 1000, M is added 1 time. If 
-the decomposed number was 2000 M would be repeated twice(2000/1000) and 
-stored into romanResult.
-
-Currently, romanResult = M
-
-For the value of next denomination,100 - 
-* if the decomposed number is 1, 2, or 3 the character 'C' is appended 
-to romanResult 1, 2, or 3 times respectively.
-* if the decomposed number is 4, "CD" is appended to romanResult
-* if the decomposed number is 5, 'D' is appended to romanResult
-* if the decomposed number is 6, 7, or 8, 'D' is appended to appended 
-along with 'C' which is repeated 1, 2, or 3 times 
-respectively(depending on value of the decomposed number).
-* if the decomposed number is 9, "CM" is appended to the romanResult.
-
-In our example, the decomposed number with denomination 100 is 4. So, 
-"CD" is appended to the romanResult.
-
-Now, romanResult = MCD
+We can verify the program works flawlessly by comparing the initial 
+input file numbers.txt with numbers-dup.txt. If contents of both files 
+are equal then it means the program works.
 
 
-For the value at the next denomination, i.e. 10 -
-* if the decomposed number is 1, 2, or 3, 'X' is appended 1, 2, or 3 
-times respectively to romanResult
-* if decomposed number is 4, "XL" is appended to romanResult
-* if decomposed number is 5, "L" is appended to romanResult
-* if decomposed number is 6, 7, or 8, 'L' is appended once and 'X' is 
-appended 1, 2, or 3 times respectively
-* if decomposed number is 9 "XC" is appended to the romanResult
+## Convert between Roman and Arabic numerals - The Logic
 
-In our example decomposed number at tens place is 8, which means 'L' is 
-appended once followed by 'X' appended 3 times to romanResult.
+The program converts an Arabic numeral input to its corresponding Roman 
+numeral and vice versa.
 
-Now, romanResult = MCDLXXX
+Translating an Arabic to a Roman numeral :
 
+The permissible range of input values is from 1 - 3999. So, the first 
+thing that is done is to check whether the input is in this range, and 
+also the individual digits are actually numbers and not any other 
+characters.
 
-For the value at the next denomination, that is unit's place -
-* if the decomposed number is 1, 2, or 3, 'I' is repeated 1, 2, or 3 
-times respectively and appended to romanResult
-* if the decomposed number is 4, "IV" is appended to romanResult
-* if the decomposed number is 5, 'V' is appended to romanResult
-* if the decomposed number is 6, 7, or 8, 'V' is appended to romanResult 
-followed by 'I' 1, 2, or 3 times respectively
-* if the decomposed number is 9, "IX" is simply appended to romanResult
+For the actual translation, the input number is split into its 
+individual digits, and these individual digits further converted into 
+denomintaions of powers of ten based on its place value.
 
-In our case, the value 9 is at unit's place, so "IX" is appended to 
-current value of romanResult.
+For example, 2489 will be split up as 2000, 400, 80, and 9.
 
-i.e. final value of romanResult = MCDLXXXIX
+For each of these numbers it is checked whether the number has a 
+standard Roman representation. Otherwise, each of these numbers are 
+compared with the appropriate multiple of 5 depending on the place value 
+of the number. If the the number is less than its appropriate five's 
+multiple then the Roman equivalent of the place value is repeated as 
+many times as the digit's value. If either of the above comparisons do 
+not satisfy then the Roman value of the five's multiple is along with 
+the Roman value of the place value(repeated as per the number) is 
+returned.
 
+This list of checks is done for each position of the input number.
 
-Translating Roman numerals to Arabic.
+Connverting a Roman number to its equivalent Arabic
 
-At the beginning of this translation a function isRoman() is employed to 
-check if the Roman numeral input is a valid Roman numeral. isRoman() 
-carries out the following checks - 
-* With the help of isCharacterPresentInRomanArray() it is checked if 
-the 
-Roman input has only legitimate characters of the Roman numerals, i.e. 
-only - M, D, C, L, X, V ,and I.
-* The Roman input does not have more than 3 consequtive Is
-* The Roman input does not have consequtive Vs
-* The Roman input does not have consequtive Ls
-* The Roman input does not have more than 3 consequtive Xs
-* And, finally the order of the Roman characters - If the value of a 
-roman character is less than the character following it, then ten times 
-the first character should be more than the second character.
+A characters of the Roman numeral alphabet are - I, V, X, L, C, D, M. 
+One of the first checks done on the Roman input numeral is to see 
+whether any illegal characters are present in it. Besides this, 
+every Roman numeral follows three rules :
+(i) A Roman numeral cannot have more than three consequtive Is, Xs or 
+Cs
+(ii) A Roman numeral cannot have cosequtive Vs, Ls or Ds
+(iii) If a lower value Roman character precedes a character then that 
+character's value should not only be a power of 10 but also ten times 
+greater than the following character.
 
-A function splitRomanNumbers() stores the Arabic value of the 
-individual Roman characters in an array.
+When a Roman input checks the above four conditions, it is a valid Roman 
+numeral.
 
-The actual translation to Arabic numbers is done by the function 
-romanToArabic(). Here, it iterates over the length of the array of split 
-roman characters. Two checks are done - 
-* If the value in the array is followed by a lesser value number, the 
-current value is simply added to a 'sum' variable
-* If the value in the array is followed by a greater value number, the 
-difference is calculated and added to 'sum',and an iteration is skipped
-
-After the entire iteration is finished, we have the equavalent arabic 
-value in 'sum'.
+To convert a Roman numeral to its Arabic equivalent, the characters are 
+directly converted to their corresponding Arabic values and added 
+together. The one check to look out for is, whether a character is 
+followed by a bigger value character. In such a case, the lower value 
+character is subtracted from the bigger value. 
