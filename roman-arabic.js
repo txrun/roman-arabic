@@ -25,28 +25,28 @@ const arabicToRomanMap = {
 // to check if numbers are in range
 function isNumberInRange(input) {
     var integerNumber = parseInt(input);
-    if(!Number.isNaN(integerNumber) && integerNumber >=1 && integerNumber <=3999)
+    if (!Number.isNaN(integerNumber) && integerNumber >= 1 && integerNumber <= 3999)
         return (integerNumber);
 }
 
 // Converts Arabic numeral into equivalent Roman numeral
 function arabicToRoman(userInput) {
     var decomposedDigits = userInput.split("");
-    
+
     var mappedRomanList = decomposedDigits.map(function(currentValue, i) {
         var exponent = decomposedDigits.length - i - 1;
         var tensPower = Math.pow(10, exponent);
         var powerOfTensValue = currentValue * tensPower;
 
-        if(arabicToRomanMap[powerOfTensValue])
+        if (arabicToRomanMap[powerOfTensValue])
             return arabicToRomanMap[powerOfTensValue];
-        
+
         if (powerOfTensValue < (5 * tensPower))
             return (arabicToRomanMap[tensPower].repeat(powerOfTensValue / tensPower));
-        
+
         var diff = powerOfTensValue - (5 * tensPower);
         return (arabicToRomanMap[(5 * tensPower)] + arabicToRomanMap[tensPower].repeat(diff / tensPower));
-        
+
     });
     return mappedRomanList.join('');
 }
@@ -65,7 +65,7 @@ function isRoman(input) {
     var length = input.length;
     for (var i = 0; i < length; i++) {
         if (invalidRomanRuleForIXC(input, i) || invalidRomanRuleForVLD(input, i) ||
-            invalidRomanRuleForCharacterOrder(input, i) || isInvalidRomanCharacter(input[i])) {   
+            invalidRomanRuleForCharacterOrder(input, i) || isInvalidRomanCharacter(input[i])) {
             return false;
         }
     }
@@ -73,24 +73,24 @@ function isRoman(input) {
 }
 
 function invalidRomanRuleForCharacterOrder(romanCharacterArray, i) {
-    return ((romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i+1]]) &&
-        (romanToArabicMap[romanCharacterArray[i]] * 10 < romanToArabicMap[romanCharacterArray[i+1]]));
+    return ((romanToArabicMap[romanCharacterArray[i]] < romanToArabicMap[romanCharacterArray[i + 1]]) &&
+        (romanToArabicMap[romanCharacterArray[i]] * 10 < romanToArabicMap[romanCharacterArray[i + 1]]));
 
 }
 
 function isInvalidRomanCharacter(character) {
     return (Object.keys(romanToArabicMap).indexOf(character) === -1);
-    
+
 }
 
-function invalidRomanRuleForIXC(romanCharacterArray, i) {   
-    return((romanCharacterArray.slice(i, i+4) === "IIII") || (romanCharacterArray.slice(i, i+4) === "XXXX") || 
-        (romanCharacterArray.slice(i, i+4) === "CCCC"));
+function invalidRomanRuleForIXC(romanCharacterArray, i) {
+    return ((romanCharacterArray.slice(i, i + 4) === "IIII") || (romanCharacterArray.slice(i, i + 4) === "XXXX") ||
+        (romanCharacterArray.slice(i, i + 4) === "CCCC"));
 }
 
 function invalidRomanRuleForVLD(romanCharacterArray, i) {
-   return((romanCharacterArray.slice(i, i+2) === "LL" )|| (romanCharacterArray.slice(i, i+2) === "DD") || 
-    (romanCharacterArray.slice(i, i+2) === "VVV"));
+    return ((romanCharacterArray.slice(i, i + 2) === "LL") || (romanCharacterArray.slice(i, i + 2) === "DD") ||
+        (romanCharacterArray.slice(i, i + 2) === "VVV"));
 }
 
 // converting roman numerals to arabic
@@ -98,19 +98,19 @@ function romanToArabic(input) {
     var romanCharacterArray = input.split("");
 
     return romanCharacterArray.reduce(function(total, currentValue, i, romanArr) {
-        
-        if (i > 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i-1]]) 
+
+        if (i > 0 && romanToArabicMap[currentValue] > romanToArabicMap[romanArr[i - 1]])
             return total;
-        
+
         if (romanToArabicMap[currentValue] < romanToArabicMap[romanArr[i + 1]]) {
             total += romanToArabicMap[romanCharacterArray[i + 1]] - romanToArabicMap[currentValue];
             return total;
         }
-        
+
         total += romanToArabicMap[currentValue];
         return total;
-        
-    }, 0);  
+
+    }, 0);
 }
 
 const fileInput = readline.createInterface({
